@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Все объявления{% endblock %}
+{% block content %}
+    {% for warehouse in warehouses %}
+        {% if warehouse.is_active == True %}
+            <div class="object">
+                <a href="{{ warehouse.image.url }}">
+                <img src="{{ warehouse.image.url }}" alt="фото" width="200" height="200"></a>
+                <p>Регион: {{ warehouse.region }}<br>
+                Город: {{ warehouse.city }}<br>
+                Название склада: {{ warehouse.name }}<br>
+                Площадь склада: {{ warehouse.square }}<br>
+                Тип склада: {{ warehouse.type_warehouse }}<br>
+                Тип продажи: {{ warehouse.type_of_sale }}<br>
+                Цена: {{ warehouse.price }}
+                {% if name_user and user_pk == warehouse.user_id %}
+                    <a href="{% url 'change_price' warehouse.id %}">Изменить цену</a>
+                {% endif %}
+                <br>Адрес: {{ warehouse.address }}<br>
+                Дата размещения: {{ warehouse.date_add }}<br><br>
+                <a href="{% url 'warehouse_all_information' warehouse.id %}">Описание</a>
+                {% if name_user and user_pk == warehouse.user_id %}
+                    <a href="{% url 'delete_warehouse' warehouse.id %}">Удалить объявление</a>
+                {% endif %}
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endblock %}

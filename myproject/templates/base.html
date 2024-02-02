@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{% static 'mainapp/css/style.css' %}">
+    <title>{% block title %}Система Складов{% endblock %}</title>
+</head>
+<header>
+    <h2 align="center">Система Складов</h2>
+    <h3 align="center">
+    <a href="{% url 'main_index' %}">.....Главная.....</a>
+    <a href="{% url 'warehouse_full' %}">.....Объявления.....</a>
+    </h3>
+    {% if name_user %}
+            <h4>Добро пожаловать, {{ name_user }} <a href="{% url 'logout_user' %}">Выйти</a></h4>
+            <h3 align="center">
+            <a href="{% url 'my_warehouse' %}">.....Мои объявления.....</a>
+            <a href="{% url 'warehouse_form' %}">.....Разместить Объявление.....</a>
+            <a href="{% url 'delete_user' %}">.....Удалить учётную запись.....</a>
+            </h3>
+    {% else %}
+            <h3>
+            <a href="{% url 'add_user' %}">.....Регистрация.....</a>
+            <a href="{% url 'login_user' %}">.....Войти.....</a>
+            </h3>
+    {% endif %}
+</header>
+<body>
+    {% block content %}
+        <p>Скоро тут появится текст...</p>
+    {% endblock %}
+</body>
+<footer><h2 align="center">Все права защищены (c)2024</h2></footer>
+</html>

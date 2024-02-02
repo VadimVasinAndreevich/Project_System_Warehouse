@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ warehouse.name }}{% endblock %}
+{% block content %}
+    <div class="object">
+        <a href="{{ warehouse.image.url }}">
+        <img src="{{ warehouse.image.url }}" alt="фото" width="200" height="200"></a>
+        <p>{{ warehouse.description }}</p>
+    </div>
+{% endblock %}
