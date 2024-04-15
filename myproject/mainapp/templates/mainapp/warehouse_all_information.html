@@ -5,6 +5,11 @@
     <div class="object">
         <a href="{{ warehouse.image.url }}">
         <img src="{{ warehouse.image.url }}" alt="фото" width="200" height="200"></a>
-        <p>{{ warehouse.description }}</p>
+        <p>
+        {{ warehouse.description }}
+        {% if name_user and user_pk == warehouse.user_id %}
+            <a href="{% url 'change_description' warehouse.id %}">Изменить описание</a>
+        {% endif %}
+        </p>
     </div>
 {% endblock %}

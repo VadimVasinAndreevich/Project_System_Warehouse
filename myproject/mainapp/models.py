@@ -20,14 +20,14 @@ class Cities(models.Model):
 
 
 class Warehouse(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    region = models.ForeignKey(Regions, on_delete=models.CASCADE)
-    city = models.ForeignKey(Cities, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, verbose_name='пользователь', on_delete=models.CASCADE)
+    region = models.ForeignKey(Regions, verbose_name='регион', on_delete=models.CASCADE)
+    city = models.ForeignKey(Cities, verbose_name='город', on_delete=models.CASCADE)
     name = models.CharField(verbose_name='склад', max_length=24)
     square = models.DecimalField(verbose_name='площадь склада', max_digits=6, decimal_places=2, default=0)
     type_warehouse = models.CharField(verbose_name='тип склада', max_length=24)
     type_of_sale = models.CharField(verbose_name='тип продажи', max_length=24)
-    image = models.ImageField(blank=True)
+    image = models.ImageField(verbose_name='изображение', upload_to='warehouse/', blank=True)
     description = models.TextField(verbose_name='описание склада', blank=True)
     price = models.DecimalField(verbose_name='цена', max_digits=12, decimal_places=2, default=0)
     address = models.CharField(verbose_name='адрес склада', max_length=200)

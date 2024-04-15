@@ -12,8 +12,11 @@
                 Название склада: {{ warehouse.name }}<br>
                 Площадь склада: {{ warehouse.square }}<br>
                 Тип склада: {{ warehouse.type_warehouse }}<br>
-                Тип продажи: {{ warehouse.type_of_sale }}<br>
-                Цена: {{ warehouse.price }}
+                Тип продажи: {{ warehouse.type_of_sale }}
+                {% if name_user and user_pk == warehouse.user_id %}
+                    <a href="{% url 'change_sale' warehouse.id %}">Изменить тип продажи</a>
+                {% endif %}
+                <br>Цена: {{ warehouse.price }}
                 {% if name_user and user_pk == warehouse.user_id %}
                     <a href="{% url 'change_price' warehouse.id %}">Изменить цену</a>
                 {% endif %}
