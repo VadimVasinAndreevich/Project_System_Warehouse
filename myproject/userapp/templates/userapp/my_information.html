@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Мои данные{% endblock %}
+{% block content %}
+    <div class="object">
+        <a href="{{ user.my_photo.url }}">
+        <img src="{{ user.my_photo.url }}" alt="{{ user.my_photo }}" width="200" height="200"></a>
+        <p><a href="{% url 'photo' %}">Добавить</a></p></p>
+        <h3>Деятельность</h3>
+        <p>{{ user.my_activity }}<a href="{% url 'activity' %}">Изменить</a></p>
+        <h3>Контактные данные</h3>
+        <p>Почта: {{ user.email }}<br>
+        Телефон: {{ user.telephone_number }}<a href="{% url 'add_telephone' %}">Изменить</a></p>
+    </div>
+{% endblock %}

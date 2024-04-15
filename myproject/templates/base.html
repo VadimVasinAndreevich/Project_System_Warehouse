@@ -13,7 +13,8 @@
     <a href="{% url 'warehouse_full' %}">.....Объявления.....</a>
     </h3>
     {% if name_user %}
-            <h4>Добро пожаловать, {{ name_user }} <a href="{% url 'logout_user' %}">Выйти</a></h4>
+            <h4>Добро пожаловать, {{ name_user }} <a href="{% url 'my_information' %}">.....Мои данные.....</a>
+                <a href="{% url 'logout_user' %}">Выйти</a></h4>
             <h3 align="center">
             <a href="{% url 'my_warehouse' %}">.....Мои объявления.....</a>
             <a href="{% url 'warehouse_form' %}">.....Разместить Объявление.....</a>

@@ -1,8 +1,19 @@
 from django.shortcuts import render, redirect
 from .models import User
 from mainapp.models import Warehouse
-from .forms import UserForm, UserLoginForm, UserAuthForm
+from .forms import UserForm, UserLoginForm, UserAuthForm, UserTelephoneForm, UserActivityForm, UserPhotoForm
 from django.contrib import sessions
+from django.core.files.storage import FileSystemStorage
+import os
+
+
+def my_information(request):
+    name_user = request.session.get('name_user', '')
+    if name_user == '':
+        return render(request, 'mainapp/index.html')
+    else:
+        user = User.objects.filter(name=name_user).first()
+        return render(request, 'userapp/my_information.html', {'user': user, 'name_user': name_user})
 
 
 def add_user(request):
@@ -54,16 +65,79 @@ def delete_user(request):
         message = 'Неверно введён пароль'
         user = User.objects.filter(name=name_user).first()
         if user.password == request.POST['password']:
-            warehouse = Warehouse.objects.filter(user_id=user.pk).all()
-            for el in warehouse:
-                el.is_active = False
-                el.save()
-            user.is_active = False
-            user.save()
+            warehouses = Warehouse.objects.filter(user_id=user.pk).all()
+            for warehouse in warehouses:
+                os.remove(f'media/{warehouse.image}')
+                warehouse.delete()
+            os.remove(f'media/{user.my_photo}')
+            user.delete()
             del request.session['name_user']
             message = 'Запись удалена'
-            return render(request, 'userapp/user_index.html', {'message': message})
+            return render(request, 'userapp/user_index.html', {'message': message, 'name_user': name_user})
     else:
         form = UserAuthForm()
         message = 'Введите пароль для подтверждения удаления учётной записи в системе'
+    return render(request, 'userapp/user_form.html', {'form': form, 'message': message, 'name_user': name_user})
+
+
+def add_telephone(request):
+    name_user = request.session.get('name_user', '')
+    if name_user == '':
+        return render(request, 'mainapp/index.html')
+    if request.method == 'POST':
+        form = UserTelephoneForm(request.POST)
+        message = 'Ошибка в данных'
+        if form.is_valid() and request.POST['telephone_number'] is not None:
+            telephone_number = form.cleaned_data['telephone_number']
+            user = User.objects.filter(name=name_user).first()
+            user.telephone_number = telephone_number
+            user.save()
+            message = 'Контактный номер добавлен'
+            return render(request, 'userapp/user_index.html', {'message': message, 'name_user': name_user})
+    else:
+        form = UserTelephoneForm()
+        message = 'Заполните форму'
+    return render(request, 'userapp/user_form.html', {'form': form, 'message': message, 'name_user': name_user})
+
+
+def activity(request):
+    name_user = request.session.get('name_user', '')
+    if name_user == '':
+        return render(request, 'mainapp/index.html')
+    if request.method == 'POST':
+        form = UserActivityForm(request.POST)
+        message = 'Ошибка в данных'
+        if form.is_valid() and request.POST['my_activity'] is not None:
+            my_activity = form.cleaned_data['my_activity']
+            user = User.objects.filter(name=name_user).first()
+            user.my_activity = my_activity
+            user.save()
+            message = 'Описание деятельности добавлено'
+            return render(request, 'userapp/user_index.html', {'message': message, 'name_user': name_user})
+    else:
+        form = UserActivityForm()
+        message = 'Заполните форму'
+    return render(request, 'userapp/user_form.html', {'form': form, 'message': message, 'name_user': name_user})
+
+
+def photo(request):
+    name_user = request.session.get('name_user', '')
+    if name_user == '':
+        return render(request, 'mainapp/index.html')
+    if request.method == 'POST':
+        form = UserPhotoForm(request.POST, request.FILES)
+        message = 'Ошибка в данных'
+        if form.is_valid():
+            my_photo = form.cleaned_data['my_photo']
+            user = User.objects.filter(name=name_user).first()
+            if user.my_photo is not None:
+                os.remove(f'media/{user.my_photo}')
+            user.my_photo = my_photo
+            user.save()
+            FileSystemStorage()
+            message = 'Фото добавлено'
+            return render(request, 'userapp/user_index.html', {'message': message, 'name_user': name_user})
+    else:
+        form = UserPhotoForm()
+        message = 'Заполните форму'
     return render(request, 'userapp/user_form.html', {'form': form, 'message': message, 'name_user': name_user})
