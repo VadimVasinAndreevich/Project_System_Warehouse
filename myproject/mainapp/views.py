@@ -8,11 +8,13 @@ import os
 
 
 def main_index(request):
+    """Главная страница"""
     name_user = request.session.get('name_user', '')
     return render(request, 'mainapp/index.html', {'name_user': name_user})
 
 
 def warehouse_full(request):
+    """Все объявления"""
     name_user = request.session.get('name_user', '')
     warehouses = Warehouse.objects.all().order_by('-date_add')
     if name_user == '':
@@ -24,6 +26,7 @@ def warehouse_full(request):
 
 
 def my_warehouse(request):
+    """Объявления пользователя"""
     name_user = request.session.get('name_user', '')
     if name_user == '':
         return render(request, 'mainapp/index.html')
@@ -34,6 +37,7 @@ def my_warehouse(request):
 
 
 def warehouse_all_information(request, warehouse_id):
+    """Подробное описание склада"""
     name_user = request.session.get('name_user', '')
     user = User.objects.filter(name=name_user).first()
     warehouse = get_object_or_404(Warehouse, pk=warehouse_id)
@@ -42,6 +46,7 @@ def warehouse_all_information(request, warehouse_id):
 
 
 def warehouse_form(request):
+    """Создание объявления"""
     name_user = request.session.get('name_user', '')
     if name_user == '':
         return render(request, 'mainapp/index.html')
@@ -75,6 +80,7 @@ def warehouse_form(request):
 
 
 def delete_warehouse(request, warehouse_id):
+    """Удаление объявления"""
     name_user = request.session.get('name_user', '')
     if name_user == '':
         return render(request, 'mainapp/index.html')
@@ -95,6 +101,7 @@ def delete_warehouse(request, warehouse_id):
 
 
 def change_price(request, warehouse_id):
+    """Изменение цены"""
     name_user = request.session.get('name_user', '')
     if name_user == '':
         return render(request, 'mainapp/index.html')
@@ -116,6 +123,7 @@ def change_price(request, warehouse_id):
 
 
 def change_sale(request, warehouse_id):
+    """Изменение типа продажи"""
     name_user = request.session.get('name_user', '')
     if name_user == '':
         return render(request, 'mainapp/index.html')
@@ -137,6 +145,7 @@ def change_sale(request, warehouse_id):
 
 
 def change_description(request, warehouse_id):
+    """Изменение описания"""
     name_user = request.session.get('name_user', '')
     if name_user == '':
         return render(request, 'mainapp/index.html')
