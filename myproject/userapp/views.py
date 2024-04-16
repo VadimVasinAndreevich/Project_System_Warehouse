@@ -8,6 +8,7 @@ import os
 
 
 def my_information(request):
+    """Информация о пользователе"""
     name_user = request.session.get('name_user', '')
     if name_user == '':
         return render(request, 'mainapp/index.html')
@@ -17,6 +18,7 @@ def my_information(request):
 
 
 def add_user(request):
+    """Создание учётной записи"""
     if request.method == 'POST':
         form = UserForm(request.POST)
         message = 'Ошибка в данных'
@@ -35,6 +37,7 @@ def add_user(request):
 
 
 def login_user(request):
+    """Авторизация"""
     if request.method == 'POST':
         form = UserLoginForm(request.POST)
         user = User.objects.filter(email=request.POST['email'], password=request.POST['password']).first()
@@ -51,12 +54,14 @@ def login_user(request):
 
 
 def logout_user(request):
+    """Выход из учётной записи"""
     del request.session['name_user']
     message = 'Вы вышли из учётной записи'
     return render(request, 'userapp/user_index.html', {'message': message})
 
 
 def delete_user(request):
+    """Удаление учётной записи"""
     name_user = request.session.get('name_user', '')
     if name_user == '':
         return render(request, 'mainapp/index.html')
@@ -81,6 +86,7 @@ def delete_user(request):
 
 
 def add_telephone(request):
+    """Добавить номер телефона"""
     name_user = request.session.get('name_user', '')
     if name_user == '':
         return render(request, 'mainapp/index.html')
@@ -101,6 +107,7 @@ def add_telephone(request):
 
 
 def activity(request):
+    """Описание деятельности"""
     name_user = request.session.get('name_user', '')
     if name_user == '':
         return render(request, 'mainapp/index.html')
@@ -121,6 +128,7 @@ def activity(request):
 
 
 def photo(request):
+    """Добавить фото"""
     name_user = request.session.get('name_user', '')
     if name_user == '':
         return render(request, 'mainapp/index.html')
